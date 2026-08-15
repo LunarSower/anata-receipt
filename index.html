@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-immersive-translate-page-theme="light"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANATA RECEIPT - Print Yourself</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=8">
+<style data-id="immersive-translate-input-injected-css"></style></head>
+<body>
+<div id="app">
+    <header class="app-header">
+        <div class="header-left">
+            <h1 class="app-title">ANATA RECEIPT</h1>
+            <span class="app-subtitle">Turn your day into a single receipt</span>
+        </div>
+        <div class="header-right">
+            <button id="stack-btn" class="header-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="5" rx="1"></rect>
+                    <rect x="3" y="10" width="18" height="5" rx="1"></rect>
+                    <rect x="3" y="16" width="18" height="5" rx="1"></rect>
+                </svg>
+                <span id="stack-count">3</span>
+            </button>
+        </div>
+    </header>
+    <main class="app-main">
+        <div class="printer-area">
+            <div class="receipt-tabs">
+                <button class="tab-btn active" data-type="snap">Snap Receipt</button>
+                <button class="tab-btn" data-type="custom">Custom Receipt</button>
+            </div>
+            <div class="printer-wrapper">
+                <div class="printer-body">
+                    <div class="printer-top">
+                        <div class="printer-brand">RECEIPT</div>
+                        <div class="printer-led" id="printer-led"></div>
+                    </div>
+                    <div class="printer-slot">
+                        <div class="slot-inner"></div>
+                    </div>
+                </div>
+                <div class="receipt-output" id="receipt-output"></div>
+            </div>
+            <button id="issue-btn" class="issue-btn" disabled="">
+                <span class="issue-text">Issue</span>
+                <span class="issue-sub">Print Receipt</span>
+            </button>
+        </div>
+        <aside class="input-panel" id="input-panel">
+            <div class="input-section" id="snap-input">
+                <h2 class="panel-title">Snap Receipt</h2>
+                <p class="panel-desc">Pick one photo, turn it into a B&amp;W halftone receipt</p>
+                <div class="photo-upload-zone" id="snap-upload-zone">
+                    <input type="file" id="snap-file-input" accept="image/*" hidden="">
+                    <div class="upload-placeholder" id="snap-placeholder">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                        <span>Select Photo</span>
+                    </div>
+                    <img id="snap-preview" class="photo-preview" style="display:none">
+                </div>
+                <div class="caption-row" id="snap-caption-row" style="display:none">
+                    <label class="panel-label">Caption</label>
+                    <input type="text" id="snap-caption" class="text-input" placeholder="Photo of the day" maxlength="30">
+                </div>
+                <div class="tear-hint" id="tear-hint" style="display:none">
+                    <span>Drag down or double-click the receipt to tear it off</span>
+                </div>
+            </div>
+            <div class="input-section" id="custom-input" style="display:none">
+                <h2 class="panel-title">Custom Receipt</h2>
+                <p class="panel-desc">Add a title and items, then attach one photo</p>
+                <div class="field-row">
+                    <label class="panel-label">Title</label>
+                    <input type="text" id="custom-title" class="text-input" placeholder="My Memo" maxlength="24">
+                </div>
+                <div class="field-row">
+                    <label class="panel-label">Store Name (optional)</label>
+                    <input type="text" id="custom-store" class="text-input" placeholder="ANATA RECEIPT" maxlength="20">
+                </div>
+                <div class="field-row">
+                    <label class="panel-label">Items</label>
+                    <div id="items-list" class="items-list">
+                        <div class="item-row" data-item="0">
+                            <input type="text" class="item-name" placeholder="Item name" maxlength="20">
+                            <input type="number" class="item-amount" placeholder="0" min="0">
+                            <button class="item-remove" title="Delete">x</button>
+                        </div>
+                    </div>
+                    <button id="add-item-btn" class="add-item-btn">+ Add Item</button>
+                </div>
+                <div class="field-row">
+                    <label class="panel-label">Photo (optional)</label>
+                    <div class="photo-upload-zone small" id="custom-upload-zone">
+                        <input type="file" id="custom-file-input" accept="image/*" hidden="">
+                        <div class="upload-placeholder" id="custom-placeholder">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>Select Photo</span>
+                        </div>
+                        <img id="custom-preview" class="photo-preview" style="display:none">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <label class="panel-label">Currency</label>
+                    <div class="currency-toggle">
+                        <button class="currency-btn active" data-cur="yen">YEN JPY</button>
+                        <button class="currency-btn" data-cur="usd">USD</button>
+                        <button class="currency-btn" data-cur="eur">EUR</button>
+                    </div>
+                </div>
+            </div>
+            <div class="input-section options-section">
+                <h2 class="panel-title">Paper Options</h2>
+                <div class="field-row">
+                    <label class="panel-label">Width</label>
+                    <div class="width-toggle">
+                        <button class="width-btn active" data-width="320">320px</button>
+                        <button class="width-btn" data-width="380">380px</button>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="barcode-checkbox" checked="">
+                        <span>Barcode</span>
+                    </label>
+                </div>
+                <div class="field-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="qrcode-checkbox" checked="">
+                        <span>QR Code</span>
+                    </label>
+                </div>
+                <div class="field-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="stamp-checkbox">
+                        <span>Stamp</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+    </main>
+    <div class="modal-overlay" id="stack-modal" style="display:none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Receipt Stack</h2>
+                <button id="close-stack-btn" class="close-btn">x</button>
+            </div>
+            <div class="stack-list" id="stack-list">
+                <p class="empty-stack">No receipts yet</p>
+            </div>
+            <div class="modal-footer">
+                <button id="clear-stack-btn" class="danger-btn">Delete All</button>
+                <button id="download-all-btn" class="action-btn" disabled="">Download All</button>
+            </div>
+        </div>
+    </div>
+    <div class="loading-overlay" id="loading-overlay" style="display:none">
+        <div class="printer-loading">
+            <div class="loading-paper"></div>
+            <p>Printing...</p>
+        </div>
+    </div>
+</div>
+<script src="receipt-engine.js?v=8"></script>
+<script src="app.js?v=8"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
